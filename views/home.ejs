@@ -1,0 +1,77 @@
+<%- include('partials/header') %>
+
+<div class="jumbotron text-center">
+  <iframe
+    width="450"
+    height="260"
+    style="border: 1px solid #cccccc"
+    src="https://thingspeak.com/channels/2048487/charts/1?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"
+  ></iframe>
+  <iframe
+    width="450"
+    height="260"
+    style="border: 1px solid #cccccc"
+    src="https://thingspeak.com/channels/2048487/charts/2?bgcolor=%23ffffff&color=%23d62020&dynamic=true&results=60&type=line&update=15"
+  ></iframe>
+  <div class="container">
+    <i class="fas fa-wind fa-6x"></i>
+    <h1 class="display-3"></h1>
+    <hr />
+    <form id="locationForm" action="/save-location" method="POST">
+      <input type="hidden" id="latitudeInput" name="latitude" value="" />
+      <input type="hidden" id="longitudeInput" name="longitude" value="" />
+      <button id="getLocation" class="btn btn-dark btn-lg">
+        Save Location
+      </button>
+    </form>
+    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+  </div>
+</div>
+
+<script>
+  const getLocationButton = document.getElementById("getLocation");
+
+  getLocationButton.addEventListener(
+    "click",
+    () => {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          saveUserLocation,
+          handleGeolocationError
+        );
+      } else {
+        alert("Geolocation is not supported in your browser.");
+      }
+    },
+    { passive: true }
+  ); // Mark the event handler as passive
+  function handleGeolocationError(error) {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        alert("Geolocation permission denied by the user.");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        alert("Geolocation information is unavailable.");
+        break;
+      case error.TIMEOUT:
+        alert("Geolocation request timed out.");
+        break;
+      default:
+        alert("An unknown error occurred.");
+    }
+  }
+  function saveUserLocation(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+
+    // Set the raw latitude and longitude values in the input fields
+    document.getElementById("latitudeInput").value = latitude;
+    document.getElementById("longitudeInput").value = longitude;
+    console.log(latitude + ", " + longitude);
+
+    // Submit the form
+    document.getElementById("locationForm").submit();
+  }
+</script>
+
+<%- include('partials/footer') %>

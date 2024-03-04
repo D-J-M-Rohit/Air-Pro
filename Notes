@@ -1,0 +1,5 @@
+get device location by Admin:
+username: Admin@gmailcom
+password: Admin
+
+https://api.thingspeak.com/channels/2048487/feeds/last.json  to get thingspeak data

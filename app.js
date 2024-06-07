@@ -93,8 +93,8 @@ let transporter = nodemailer.createTransport({
   port: 465,
   secure: true,
   auth: {
-    user: "sriramyathin123@gmail.com",
-    pass: "grqatlyyjbokbzou",
+    user: process.env.GMAIL_USER,
+    pass:  process.env.GMAIL_PASSWORD,
     // ⚠️ Use environment variables set on the server for these values when deploying
   },
 });
